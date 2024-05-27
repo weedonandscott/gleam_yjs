@@ -82,8 +82,10 @@ export function forEach(yArray, cb) {
 }
 
 export function map(yArray, cb) {
-  return yArray.map((yValue, index, yArray) =>
-    unwrapYValue(cb(classifyKnownYValue(yValue), index, yArray)),
+  return List.fromArray(
+    yArray.map((yValue, index, yArray) =>
+      cb(classifyKnownYValue(yValue), index, yArray),
+    ),
   );
 }
 

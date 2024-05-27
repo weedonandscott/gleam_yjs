@@ -6,21 +6,21 @@ settings:
 
 dependencies:
   y-protocols:
-    specifier: ^1.0.6
+    specifier: 1.0.6
     version: 1.0.6(yjs@13.6.14)
   yjs:
-    specifier: ^13.6.14
+    specifier: 13.6.14
     version: 13.6.14
 
 devDependencies:
   husky:
-    specifier: ^9.0.11
+    specifier: 9.0.11
     version: 9.0.11
   prettier:
-    specifier: ^3.2.5
+    specifier: 3.2.5
     version: 3.2.5
   typescript:
-    specifier: ^5.4.3
+    specifier: 5.4.3
     version: 5.4.3
 
 packages:

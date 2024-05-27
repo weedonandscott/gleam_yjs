@@ -30,6 +30,8 @@
             pnpm
             yarn
             gleam
+            typescript
+            nodePackages.typescript-language-server
           ];
         };
       });

@@ -1,4 +1,7 @@
+import gleam/int
+import gleam/list
 import gleam/option.{type Option}
+import gleam/order
 import ygleam/y.{
   type BaseType, type Transaction, type YArray, type YDoc, type YType,
   type YValue,
@@ -26,6 +29,24 @@ pub fn insert(y_array: YArray, index: Int, items: List(YValue)) -> YArray
 @external(javascript, "../yArray.mjs", "delete_from_index")
 pub fn delete(y_array: YArray, index: Int, length: Int) -> YArray
 
+pub fn delete_where(y_array: YArray, predicate: fn(YValue) -> Bool) -> YArray {
+  y_array
+  |> map(fn(value, index, _) {
+    case predicate(value) {
+      True -> Ok(index)
+      False -> Error(Nil)
+    }
+  })
+  |> list.filter_map(fn(x) { x })
+  |> list.sort(order.reverse(int.compare))
+  |> list.each(fn(index) {
+    y_array
+    |> delete(index, 1)
+  })
+
+  y_array
+}
+
 @external(javascript, "../yArray.mjs", "push")
 pub fn push(y_array: YArray, items: List(YValue)) -> YArray
 
@@ -48,7 +69,7 @@ pub fn to_json(y_array: YArray) -> BaseType
 pub fn for_each(y_array: YArray, cb: fn(YValue, Int, YArray) -> Nil) -> YArray
 
 @external(javascript, "../yArray.mjs", "map")
-pub fn map(y_array: YArray, cb: fn(YValue, Int, YArray) -> YValue) -> YArray
+pub fn map(y_array: YArray, cb: fn(YValue, Int, YArray) -> value) -> List(value)
 
 @external(javascript, "../yArray.mjs", "clone")
 pub fn clone(y_array: YArray) -> YArray
