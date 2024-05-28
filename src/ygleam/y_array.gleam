@@ -53,6 +53,39 @@ pub fn push(y_array: YArray, items: List(YValue)) -> YArray
 @external(javascript, "../yArray.mjs", "unshift")
 pub fn unshift(y_array: YArray, items: List(YValue)) -> YArray
 
+pub fn index_of(
+  y_array: YArray,
+  predicate: fn(YValue) -> Bool,
+) -> Result(Int, Nil) {
+  index_of_loop(y_array, predicate, 0)
+}
+
+pub fn index_of_loop(
+  y_array: YArray,
+  predicate: fn(YValue) -> Bool,
+  index: Int,
+) -> Result(Int, Nil) {
+  case
+    y_array
+    |> get(index)
+    |> predicate
+  {
+    True -> Ok(index)
+    False ->
+      case
+        index
+        == {
+          y_array
+          |> length
+        }
+        - 1
+      {
+        True -> Error(Nil)
+        False -> index_of_loop(y_array, predicate, index + 1)
+      }
+  }
+}
+
 @external(javascript, "../yArray.mjs", "get")
 pub fn get(y_array: YArray, index: Int) -> YValue
 
